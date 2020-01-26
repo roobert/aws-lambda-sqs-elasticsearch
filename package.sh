@@ -18,5 +18,5 @@ pip3 install -r <(pip3 freeze)
 cd "${PACKAGE_DIR}"
 zip -r9 "${TARGET_DIR}/lambda.zip" .
 
-cd "${SHIPPER_DIR}"
+cd "${TARGET_DIR}"
 zip -g "${TARGET_DIR}/lambda.zip" aws-lambda-sqs-elasticsearch.py
