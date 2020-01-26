@@ -23,7 +23,7 @@ def lambda_handler(event, context):
 
         message = {
             "messageId": record["messageId"],
-            "messageAttributes": record["messageAattributes"],
+            "messageAttributes": record["messageAttributes"],
             "body": record["body"],
         }
 
