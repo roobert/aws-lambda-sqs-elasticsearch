@@ -18,6 +18,7 @@ def lambda_handler(event, context):
     )
 
     for record in event["Records"]:
+        print("lambda execution starting")
         print("incoming sqs queue message:")
         print(json.dumps(record))
 
@@ -34,3 +35,4 @@ def lambda_handler(event, context):
 
         print("elasticsearch response:")
         print(response)
+        print("lambda execution finished")
