@@ -2,6 +2,7 @@
 
 import os
 import json
+import certifi
 from elasticsearch import Elasticsearch
 
 
