@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
 import json
-import boto3
 import argparse
 from elasticsearch import Elasticsearch
 
 
-def main():
+def lambda_handler(event, context):
     args = parse_args()
-    sqs = boto3.resource("sqs")
     es = Elasticsearch(
         [
             {
@@ -19,23 +17,30 @@ def main():
         ]
     )
 
-    queue = sqs.get_queue_by_name(QueueName=args.sqs_queue_name)
+    for record in event["Records"]:
+        print("incoming sqs queue message:")
+        print(json.dumps(record))
 
-    while True:
-        for sqs_message in queue.receive_messages():
-            es_message = {"MessageId": sqs_message.message_id, "Body": sqs_message.body}
-            print(json.dumps(es_message))
-            response = es.index(index="events", body=json.dumps(es_message))
-            print(response["result"])
-            sqs_message.delete()
+        message = {
+            "messageId": record["messageId"],
+            "messageAttributes": record["messageAattributes"],
+            "body": record["body"],
+        }
+
+        print("processed message:")
+        print(json.dumps(message))
+
+        response = es.index(index="events", body=json.dumps(message))
+
+        print("elasticsearch response:")
+        print(response)
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Read messages from an SQS queue and write them to an Elasticsearch domain"
+        description="SQS queue triggered lambda which writes messages to Elasticsearch domain"
     )
 
-    parser.add_argument("--sqs-queue-name", help="sqs queue name", required=True)
     parser.add_argument(
         "--elasticsearch-host", help="elasticsearch host", required=True
     )
@@ -47,7 +52,3 @@ def parse_args():
     )
 
     return parser.parse_args()
-
-
-if __name__ == "__main__":
-    main()
