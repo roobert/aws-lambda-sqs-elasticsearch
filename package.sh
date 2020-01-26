@@ -2,7 +2,6 @@
 
 PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TARGET_DIR=${PROJECT_ROOT}
-SHIPPER_DIR=${PROJECT_ROOT}/aws-lambda-sqs-elasticsearch
 
 deactivate  > /dev/null 2>&1
 
@@ -12,12 +11,12 @@ fi
 
 python3 -m venv venv
 . venv/bin/activate
-pip3 install -r <(pip3 freeze)
+pip3 install -r requirements.txt
 
 PACKAGE_DIR=$(find ${PROJECT_ROOT}/venv -name "site-packages")
 
 cd "${PACKAGE_DIR}"
-zip -r9 "${TARGET_DIR}/lambda.zip" .
+zip -r9 "${PROJECT_ROOT}/lambda.zip" .
 
-cd "${TARGET_DIR}"
-zip -g "${TARGET_DIR}/lambda.zip" aws-lambda-sqs-elasticsearch.py
+cd "${PROJECT_ROOT}"
+zip -g "${PROJECT_ROOT}/lambda.zip" aws-lambda-sqs-elasticsearch.py
