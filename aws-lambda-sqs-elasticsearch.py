@@ -17,22 +17,22 @@ def lambda_handler(event, context):
         ]
     )
 
+    print("lambda execution starting")
     for record in event["Records"]:
-        print("lambda execution starting")
         print("incoming sqs queue message:")
         print(json.dumps(record))
 
+        print("processed message:")
         message = {
             "messageId": record["messageId"],
             "messageAttributes": record["messageAttributes"],
             "body": record["body"],
         }
-
-        print("processed message:")
         print(json.dumps(message))
 
         response = es.index(index="events", body=json.dumps(message))
 
         print("elasticsearch response:")
         print(response)
-        print("lambda execution finished")
+
+    print("lambda execution finished")
