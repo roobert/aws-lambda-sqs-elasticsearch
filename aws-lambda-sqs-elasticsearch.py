@@ -3,7 +3,6 @@
 import os
 import json
 import certifi
-from codecs import encode, decode
 from elasticsearch import Elasticsearch
 
 
@@ -27,12 +26,7 @@ def lambda_handler(event, context):
         message = {
             "messageId": record["messageId"],
             "messageAttributes": record["messageAttributes"],
-            "body": json.loads(
-                decode(
-                    encode(record["body"], "latin-1", "backslashreplace"),
-                    "unicode-escape",
-                )
-            ),
+            "body": record["body"],
         }
         print(json.dumps(message))
 
