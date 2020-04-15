@@ -23,11 +23,13 @@ def lambda_handler(event, context):
         print(json.dumps(record))
 
         print("processed message:")
+        body = json.loads(record["body"])
         message = {
             "messageId": record["messageId"],
             "messageAttributes": record["messageAttributes"],
-            "payload": record["body"],
+            "payload": body,
         }
+
         print(json.dumps(message))
 
         response = es.index(
