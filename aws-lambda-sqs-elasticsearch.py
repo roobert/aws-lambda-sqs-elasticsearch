@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         message = {
             "messageId": record["messageId"],
             "messageAttributes": record["messageAttributes"],
-            "body": record["body"],
+            "payload": record["body"],
         }
         print(json.dumps(message))
 
