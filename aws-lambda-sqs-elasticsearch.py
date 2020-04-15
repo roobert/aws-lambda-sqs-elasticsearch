@@ -30,7 +30,9 @@ def lambda_handler(event, context):
         }
         print(json.dumps(message))
 
-        response = es.index(index="events", body=json.dumps(message))
+        response = es.index(
+            index="events", doc_type="generated", body=json.dumps(message)
+        )
 
         print("elasticsearch response:")
         print(response)
